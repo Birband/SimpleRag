@@ -1,0 +1,77 @@
+# Byte-compiled / build
+__pycache__/
+*.py[cod]
+*$py.class
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-*
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs and databases
+logs/
+*.log
+*.sqlite3
+*.db
+
+# Testing / coverage / caches
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.tox/
+
+# Model, data, indexes, embeddings, caches (large/binary artifacts)
+data/
+datasets/
+embeddings/
+indexes/
+models/
+checkpoints/
+weights/
+artifacts/
+.cache/
+.huggingface/
+HF_HOME/
+
+# Secrets / env files
+.env
+.env.*.local
+secrets.yml
+*.pem
+*.key
+*.crt
+credentials
+aws_credentials
+
+# Docker / containers / archives
+docker-compose.override.yml
+*.tar
+
+# Misc
+*.orig
+
+# .NET specific
+bin/
+obj/
+.vs/
+*.user
+*.suo
