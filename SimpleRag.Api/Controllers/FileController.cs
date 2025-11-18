@@ -5,7 +5,7 @@ using SimpleRag.Application.Services.File;
 namespace SimpleRag.Api.Controllers;
 
 [ApiController]
-[Route("api/upload")]
+[Route("api/files")]
 public class FileController : ControllerBase
 {
     private readonly IFileService _fileService;
