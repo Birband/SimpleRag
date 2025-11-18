@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using SimpleRag.Api.DTOs;
-using SimpleRag.Application.DTOs;
-using SimpleRag.Application.Services;
+using SimpleRag.Application.Services.Ask;
 
 namespace SimpleRag.Api.Controllers;
 

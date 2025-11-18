@@ -3,7 +3,7 @@ using Google.GenAI.Types;
 
 using SimpleRag.Application.DTOs;
 
-namespace SimpleRag.Application.Services;
+namespace SimpleRag.Application.Services.Ask;
 
 public class AskService : IAskService
 {

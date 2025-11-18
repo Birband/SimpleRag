@@ -75,3 +75,6 @@ obj/
 .vs/
 *.user
 *.suo
+
+# Uploaded files
+uploads/
