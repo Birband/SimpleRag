@@ -23,6 +23,11 @@ public class FileController : ControllerBase
             return BadRequest("No file uploaded.");
         }
 
+        if (file.ContentType != "application/pdf" && file.ContentType != "text/plain")
+        {
+            return BadRequest("Only PDF and TXT files are allowed.");
+        }
+
         using var stream = file.OpenReadStream();
         var fileId = await _fileService.UploadFileAsync(stream, file.FileName, file.ContentType);
         return Ok(new { FileId = fileId });

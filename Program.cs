@@ -2,7 +2,9 @@
 using SimpleRag.Application.Services.Ask;
 using SimpleRag.Application.Services.File;
 using SimpleRag.Infrastructure.FileStorage;
-using SimpleRag.Application.Services.Rag;
+using SimpleRag.Infrastructure.FileExtraction;
+using SimpleRag.Infrastructure.Rag;
+using SimpleRag.Application.ExternalInterfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,8 @@ builder.Services.AddSingleton<IStoreFile>(
 );
 builder.Services.AddScoped<IAskService, AskService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IExtractText, ExtractText>();
+builder.Services.AddScoped<IChunkText, ChunkText>();
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-using SimpleRag.Application.Services.Rag;
+using SimpleRag.Application.ExternalInterfaces;
 
 namespace SimpleRag.Infrastructure.FileStorage;
 

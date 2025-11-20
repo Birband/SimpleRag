@@ -1,4 +1,4 @@
-namespace SimpleRag.Application.Services.Rag;
+namespace SimpleRag.Application.ExternalInterfaces;
 
 public interface IStoreFile
 {
