@@ -4,16 +4,35 @@ using SimpleRag.Application.Services.File;
 using SimpleRag.Infrastructure.FileStorage;
 using SimpleRag.Infrastructure.FileExtraction;
 using SimpleRag.Infrastructure.Rag;
-using SimpleRag.Application.ExternalInterfaces;
+using SimpleRag.Application.Interfaces;
+using SimpleRag.Infrastructure.Persistence.Repositories;
+using SimpleRag.Infrastructure.Persistence;
+using SimpleRag.Application.Interfaces.Persistence;
+using SimpleRag.Infrastructure.AiIntegration;
+
+using Pgvector.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IStoreFile>(
-    _ => new FileSystemFileStorage(builder.Configuration.GetValue<string>("FileStorage:RootPath") ?? "Uploads")
+    _ => new FileSystemFileStorage(builder.Configuration.GetValue<string>("FileStorage:RootPath"))
 );
 
+builder.Services.AddDbContextPool<DocumentsDbContext>(options => 
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("VectorDatabase"),
+        o => o.UseVector()
+    )
+);
+
+builder.Services.AddScoped<IChunkRepository, ChunkRepository>();
+builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
+
+builder.Services.AddScoped<IAiClient, AiClient>();
 builder.Services.AddScoped<IAskService, AskService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IExtractText, ExtractText>();

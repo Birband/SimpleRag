@@ -1,4 +1,4 @@
-using SimpleRag.Application.ExternalInterfaces;
+using SimpleRag.Application.Interfaces;
 
 namespace SimpleRag.Infrastructure.Rag;
 

@@ -34,14 +34,14 @@ public class FileController : ControllerBase
     }
 
     [HttpGet("{fileId}")]
-    public async Task<IActionResult> GetFile(string fileId)
+    public async Task<IActionResult> GetFile(Guid fileId)
     {
-        var fileStream = await _fileService.GetFileAsync(fileId);
+        var (fileStream, document) = await _fileService.GetFileAsync(fileId);
         if (fileStream == null)
         {
             return NotFound();
         }
 
-        return File(fileStream, "application/octet-stream", fileId);
+        return File(fileStream, document.ContentType, document.FileName);
     }
 }

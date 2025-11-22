@@ -1,12 +1,17 @@
-using Google.GenAI;
-using Google.GenAI.Types;
-
 using SimpleRag.Application.DTOs;
+using SimpleRag.Application.Interfaces;
 
 namespace SimpleRag.Application.Services.Ask;
 
 public class AskService : IAskService
 {
+    private readonly IAiClient _aiClient;
+
+    public AskService(IAiClient aiClient)
+    {
+        _aiClient = aiClient;
+    }
+
     public async Task<LLMResponse> AskAsync(string? question)
     {
         if (string.IsNullOrWhiteSpace(question))
@@ -14,11 +19,8 @@ public class AskService : IAskService
             return new LLMResponse { Answer = "Question cannot be empty." };
         }
         
-        var client = new Client();
-        var response = await client.Models.GenerateContentAsync(
-            model: "gemini-2.5-flash", contents: question
-        );
-        // #TODO: Potem popraw potencjalny błąd z odpowiedzią :))
-        return new LLMResponse { Answer = response.Candidates[0].Content.Parts[0].Text };
+        var answer = await _aiClient.GetAnswearAsync(question);
+
+        return new LLMResponse { Answer = answer };
     }
 }

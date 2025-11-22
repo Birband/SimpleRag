@@ -1,4 +1,4 @@
-using SimpleRag.Application.ExternalInterfaces;
+using SimpleRag.Application.Interfaces;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
 using System.Text;

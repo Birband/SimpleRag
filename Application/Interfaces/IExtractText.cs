@@ -1,4 +1,4 @@
-namespace SimpleRag.Application.ExternalInterfaces;
+namespace SimpleRag.Application.Interfaces;
 
 public interface IExtractText
 {

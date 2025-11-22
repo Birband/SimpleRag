@@ -1,4 +1,4 @@
-using SimpleRag.Application.ExternalInterfaces;
+using SimpleRag.Application.Interfaces;
 
 namespace SimpleRag.Infrastructure.FileStorage;
 
@@ -15,23 +15,24 @@ public class FileSystemFileStorage : IStoreFile
         }
     }
 
-    public async Task<string> SaveAsync(Stream data, string fileName, string contentType)
+    public async Task<string> SaveAsync(Stream data, string fileName, string contentType, Guid fileId)
     {
-        string fileId = Guid.NewGuid().ToString();
-        string filePath = Path.Combine(_basePath, fileId + "_" + fileName);
+        string fileIdString = fileId.ToString();
+        string filePath = Path.Combine(_basePath, fileIdString);
         using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
         {
             await data.CopyToAsync(fileStream);
         }
-        return fileId;
+        return fileIdString;
     }
 
-    public async Task<Stream> OpenReadAsync(string fileId)
-    {
-        var files = Directory.GetFiles(_basePath, fileId + "_*");
+    public async Task<Stream> OpenReadAsync(Guid fileId)
+    {   
+        string fileIdString = fileId.ToString();
+        var files = Directory.GetFiles(_basePath, fileIdString);
         if (files.Length == 0)
         {
-            throw new FileNotFoundException("File not found", fileId);
+            throw new FileNotFoundException("File not found", fileIdString);
         }
 
         var fileStream = new FileStream(files[0], FileMode.Open, FileAccess.Read);
