@@ -11,8 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IStoreFile>(
-    _ => new FileSystemFileStorage(builder.Configuration.GetValue<string>("FileStorage:RootPath") ?? "XD")
+    _ => new FileSystemFileStorage(builder.Configuration.GetValue<string>("FileStorage:RootPath") ?? "Uploads")
 );
+
 builder.Services.AddScoped<IAskService, AskService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IExtractText, ExtractText>();
