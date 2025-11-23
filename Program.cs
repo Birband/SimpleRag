@@ -19,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IStoreFile>(
-    _ => new FileSystemFileStorage(builder.Configuration.GetValue<string>("FileStorage:RootPath"))
+    _ => new FileSystemFileStorage(builder.Configuration.GetValue<string>("FileStorage:RootPath") ?? "uploads")
 );
 
 builder.Services.AddDbContextPool<DocumentsDbContext>(options => 

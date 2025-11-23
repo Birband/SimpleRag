@@ -3,6 +3,7 @@ using Pgvector;
 using SimpleRag.Domain.Entities;
 using Pgvector.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using UglyToad.PdfPig.DocumentLayoutAnalysis;
 
 namespace SimpleRag.Infrastructure.Persistence.Repositories;
 
@@ -41,14 +42,15 @@ public class ChunkRepository : IChunkRepository
         
     }
 
-    public async Task<IEnumerable<(string Chunk, float Similarity)>> GetSimilarChunksAsync(Vector queryEmbedding, int topK)
+    public async Task<IEnumerable<(string Chunk, float Similarity)>> GetSimilarChunksAsync(Vector queryEmbedding, int topK, float maxDistance)
     {
         var items = await _dbContext.Chunks
-            .OrderByDescending(c => c.Embedding.CosineDistance(queryEmbedding))
+            .Select(c => new {c.Text, Distance = c.Embedding.CosineDistance(queryEmbedding)})
+            .Where(x => x.Distance <= maxDistance)
+            .OrderBy(x => x.Distance)
             .Take(topK)
-            .Select(c => new { c.Text, c.Embedding })
             .ToListAsync();
 
-        return items.Select(i => (i.Text, (float)i.Embedding.CosineDistance(queryEmbedding)));
+        return items.Select(i => (i.Text, (float)i.Distance));
     }
 }
