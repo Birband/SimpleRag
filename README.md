@@ -1,33 +1,59 @@
-## API - endpointy
+# SimpleRag 
 
-### API — endpointy
+Prosta aplikacja RAG (Retrieval-Augmented Generation) wykorzystująca .NET 8, OpenAI, PostgreSQL i VectorDB do zarządzania dokumentami PDF oraz odpowiadania na pytania na ich podstawie.
 
-- POST /api/ask  
-    Krótkie zapytanie do serwisu AI (Google AI). Zwraca odpowiedź na podstawie przesłanych danych.
+## Funkcje
 
-- POST /api/files  
-    Upload pliku. Przyjmuje multipart/form-data, zapisuje plik w magazynie i zwraca metadane (np. fileId).
+- Przesyłanie i przechowywanie plików PDF/tekstowych
+- Ekstrakcja tekstu z plików PDF/tekstowych
+- Dzielenie tekstu na fragmenty
+- Generowanie osadzeń (embeddings) za pomocą Google GenAI
+- Przechowywanie fragmentów i osadzeń w PostgreSQL (pgvector)
+- Zapytania o podobne fragmenty na podstawie osadzeń
+- Generowanie odpowiedzi na podstawie podobnych fragmentów i zapytań użytkownika
 
-- GET /api/files/{fileId}  
-    Pobranie pliku po identyfikatorze.
+## Technologie
+- .NET 8
+- Google GenAI
+- PostgreSQL z rozszerzeniem pgvector
+- Entity Framework Core
+- ASP.NET Core Web API
 
-### Kontrolery
-- FileController — endpointy związane z przesyłaniem i pobieraniem plików.  
-- AskController — endpoint do zadawania pytań i zwracania odpowiedzi z Google AI.
+## Dostępne punkty końcowe API
 
-### Serwisy (logika biznesowa)
-- FileService — logika zapisu/odczytu plików, walidacja, generowanie metadanych.  
-- AskService — obsługa zapytań do Google AI, przetwarzanie i formatowanie odpowiedzi.
+#### FILES - Zarządzanie plikami (Add/Get):
 
-### Przechowywanie
-- StoreFile — interfejs magazynu plików (zapisywanie, odczyt, usuwanie). Implementacje mogą używać systemu plików, chmury itp.
+`POST /api/files` - Przesyłanie pliku PDF/tekstowego
 
-### Szybkie uruchomienie
-Uruchom aplikację w katalogu projektu:
+`GET /api/files/{fileId}` - Pobieranie informacji o pliku
+
+#### ASK - Komunikacja z modelem językowym:
+
+`POST /api/ask` - Zadawanie pytań na podstawie przesłanych dokumentów  
+
+
+## Konfiguracja
+
+TODO: Ustawić odpowiednie zmienne środowiskowe i połączenia baz danych w `appsettings.json`.
+
+## Uruchomienie
+
+1. Sklonuj repozytorium
+2. Skonfiguruj bazę danych PostgreSQL z rozszerzeniem pgvector
+3. Uruchom migracje bazy danych
+```bash
+dotnet ef migrations add <MigrationName>
+dotnet ef database update
+```
+4. Uruchom aplikację
 ```bash
 dotnet run
 ```
+5. Użyj Swagger UI do testowania punktów końcowych API
 
-### Wersja środowiska
-- SDK: Microsoft.NET.Sdk.Web  
-- .NET: 8.0
+## Przyszłe ulepszenia
+
+- Konwersacje per użytkownik
+- Obsługa większej liczby formatów plików
+- Ulepszone zarządzanie błędami i logowanie
+- Interfejs użytkownika do przesyłania plików i zadawania pytań
