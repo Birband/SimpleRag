@@ -36,7 +36,18 @@ public class FileService : IFileService
         await _storeFile.SaveAsync(data, fileName, contentType, fileId);
         data.Position = 0;
 
-        var text = await _extractText.ExtractTextFromPDF(data);
+        var text = string.Empty;
+        switch (contentType.ToLower())
+        {
+            case "application/pdf":
+                text = await _extractText.ExtractTextFromPDF(data);
+                break;
+            case "text/plain":
+                text = await _extractText.ExtractTextFromTXT(data);
+                break;
+            default:
+                throw new NotSupportedException($"File type {contentType} is not supported.");
+        }
         var chunks = await _chunkText.ChunkTextAsync(text, chunkSize: 1000, overlap: 100);
         if (chunks.Count() > 100)
         {
