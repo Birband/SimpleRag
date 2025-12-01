@@ -1,3 +1,5 @@
+[![CI Pipeline](https://github.com/Birband/SimpleRag/actions/workflows/ci.yml/badge.svg)](https://github.com/Birband/SimpleRag/actions/workflows/ci.yml)
+
 # SimpleRag 
 
 Prosta aplikacja RAG (Retrieval-Augmented Generation) wykorzystująca .NET 8, OpenAI, PostgreSQL i VectorDB do zarządzania dokumentami PDF oraz odpowiadania na pytania na ich podstawie.
@@ -57,3 +59,5 @@ dotnet run
 - Obsługa większej liczby formatów plików
 - Ulepszone zarządzanie błędami i logowanie
 - Interfejs użytkownika do przesyłania plików i zadawania pytań
+- Dodać testy jednostkowe i integracyjne
+- GitHub Actions
