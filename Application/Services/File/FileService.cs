@@ -33,9 +33,6 @@ public class FileService : IFileService
     public async Task<string> UploadFileAsync(Stream data, string fileName, string contentType)
     {
         var fileId = Guid.NewGuid();
-        await _storeFile.SaveAsync(data, fileName, contentType, fileId);
-        data.Position = 0;
-
         var text = string.Empty;
         switch (contentType.ToLower())
         {
@@ -48,6 +45,7 @@ public class FileService : IFileService
             default:
                 throw new NotSupportedException($"File type {contentType} is not supported.");
         }
+        data.Position = 0;
         var chunks = await _chunkText.ChunkTextAsync(text, chunkSize: 1000, overlap: 100);
         if (chunks.Count() > 100)
         {
@@ -57,7 +55,7 @@ public class FileService : IFileService
         var embeddings = embeddingsFloats
             .Select(e => new Vector(e))
             .ToList();
-        
+
         await _documentRepository.AddDocumentAsync(new Document
         {
             Id = fileId,
@@ -65,7 +63,9 @@ public class FileService : IFileService
             ContentType = contentType,
             UploadedAt = DateTime.UtcNow
         });
+    
         await _chunkRepository.SaveChunksAsync(fileId, chunks: chunks, embeddings: embeddings);
+        await _storeFile.SaveAsync(data, fileName, contentType, fileId);
 
         return fileId.ToString();
     }

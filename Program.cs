@@ -12,15 +12,17 @@ using SimpleRag.Infrastructure.AiIntegration;
 
 using Pgvector.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SimpleRag.Application;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IStoreFile>(
-    _ => new FileSystemFileStorage(builder.Configuration.GetValue<string>("FileStorage:RootPath") ?? "uploads")
-);
+
+builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetSection("ApplicationSettings"));
+
+builder.Services.AddSingleton<IStoreFile, FileSystemFileStorage>();
 
 builder.Services.AddDbContextPool<DocumentsDbContext>(options => 
     options.UseNpgsql(
