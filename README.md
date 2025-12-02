@@ -55,9 +55,17 @@ dotnet run
 
 ## Przyszłe ulepszenia
 
+### QoL
 - Konwersacje per użytkownik
-- Obsługa większej liczby formatów plików
 - Ulepszone zarządzanie błędami i logowanie
-- Interfejs użytkownika do przesyłania plików i zadawania pytań
 - Dodać testy jednostkowe i integracyjne
-- GitHub Actions
+- Dodać więcej GitHub Actions
+
+### Chores
+- Interfejs użytkownika do przesyłania plików i zadawania pytań
+- Dodać rollback przy uploadzie pliku w przypadku błędów
+- Obsługa większej liczby formatów plików
+
+### Pomysły na ulepszenia jakościowe systemu RAG
+- WYMYŚLIC LEPSZE PRZESZUKIWANIE PRZESTRZENI WEKTORÓW 
+- Ulepszyć sposób dzielenia tekstu na fragmenty

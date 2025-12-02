@@ -28,7 +28,7 @@ public class DocumentsDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.Text).IsRequired();
-            entity.Property(e => e.Embedding).HasColumnType("vector(3072)").IsRequired();
+            entity.Property(e => e.Embedding).HasColumnType("vector(768)").IsRequired();
         });
     }
 

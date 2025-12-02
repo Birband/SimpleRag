@@ -16,34 +16,47 @@ public class ChunkRepository : IChunkRepository
         _dbContext = dbContext;
     }
 
+    private static Vector NormalizeVector(Vector vector)
+    {
+        var values = vector.ToArray();
+        float magnitude = (float)Math.Sqrt(values.Select(v => v * v).Sum());
+        if (magnitude == 0) return vector;
+        var normalizedValues = values.Select(v => v / magnitude).ToArray();
+        return new Vector(normalizedValues);
+    }
+
     public async Task SaveChunksAsync(Guid documentId, IEnumerable<string> chunks, IEnumerable<Vector> embeddings)
     {
         var chunkList = chunks.ToList();
-        var embeddingList = embeddings.ToList();
+        var embeddingList = embeddings.Select(NormalizeVector).ToList();
 
         if (chunkList.Count != embeddingList.Count)
         {
             throw new ArgumentException("The number of chunks must match the number of embeddings.");
         }
 
-        for (int i = 0; i < chunkList.Count; i++)
+        var chunkEntities = new List<Chunk>(chunkList.Select((chunk, index) => new Chunk
         {
-            var chunkEntity = new Chunk
-            {
-                DocumentId = documentId,
-                Text = chunkList[i],
-                Embedding = embeddingList[i]
-            };
-
-            _dbContext.Chunks.Add(chunkEntity);
-        }
+            Id = Guid.NewGuid(),
+            DocumentId = documentId,
+            Text = chunk,
+            Embedding = embeddingList[index]
+        }));
+        await _dbContext.Chunks.AddRangeAsync(chunkEntities);
 
         await _dbContext.SaveChangesAsync();
         
     }
 
-    public async Task<IEnumerable<(string Chunk, float Similarity)>> GetSimilarChunksAsync(Vector queryEmbedding, int topK, float maxDistance)
+    public async Task RemoveChunksByDocumentIdAsync(Guid documentId)
     {
+        var chunksToRemove = _dbContext.Chunks.Where(c => c.DocumentId == documentId);
+        _dbContext.Chunks.RemoveRange(chunksToRemove);
+        await _dbContext.SaveChangesAsync();
+    }
+    public async Task<IEnumerable<(string Chunk, float Distance)>> GetSimilarChunksAsync(Vector queryEmbedding, int topK, float maxDistance)
+    {
+        queryEmbedding = NormalizeVector(queryEmbedding);
         var items = await _dbContext.Chunks
             .Select(c => new {c.Text, Distance = c.Embedding.CosineDistance(queryEmbedding)})
             .Where(x => x.Distance <= maxDistance)

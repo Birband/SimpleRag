@@ -14,27 +14,32 @@ public class AiClient : IAiClient
 
     private readonly HttpClient _httpClient;
     private readonly string _apiKey;
+    private readonly string _embedModel = "models/gemini-embedding-001";
+    private readonly string _chatModel = "models/gemini-2.5-flash";
+    private readonly int _embeddingDimensionality = 768;
 
     public AiClient()
     {
         _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri("https://generativelanguage.googleapis.com/");
-        _apiKey = Environment.GetEnvironmentVariable("GOOGLE_API_KEY") ?? "KEY";
+        _apiKey = Environment.GetEnvironmentVariable("GOOGLE_API_KEY");
+
     }
     public async Task<float[]> GetEmbeddingAsync(string text)
     {
-        string url = "v1beta/models/gemini-embedding-001:embedContent";
+        string url = $"v1beta/{_embedModel}:embedContent";
 
         var payload = new
         {
-            model = "models/gemini-embedding-001",
+            model = _embedModel,
             content = new
             {
                 parts = new[]
                 {
                     new { text = text }
                 }
-            }
+            },
+            output_dimensionality = _embeddingDimensionality
         };
 
         var jsonPayload = JsonSerializer.Serialize(payload);
@@ -61,7 +66,7 @@ public class AiClient : IAiClient
     }
     public async Task<float[][]> GetEmbeddingsAsync(IEnumerable<string> chunks)
     {
-        string url = "v1beta/models/gemini-embedding-001:batchEmbedContents";
+        string url = $"v1beta/{_embedModel}:batchEmbedContents";
 
         var chunksPerBatch = 20;
 
@@ -73,14 +78,15 @@ public class AiClient : IAiClient
 
             var requests = batch.Select(chunk => new
             {
-                model = "models/gemini-embedding-001",
+                model = _embedModel,
                 content = new
                 {
                     parts = new[]
                     {
                         new { text = chunk }
                     }
-                }
+                },
+                output_dimensionality = _embeddingDimensionality
             });
 
             var payload = new
@@ -117,7 +123,7 @@ public class AiClient : IAiClient
 
     public async Task<string> GetAnswearAsync(string prompt)
     {
-        string url = "v1beta/models/gemini-2.5-flash:generateContent";
+        string url = $"v1beta/{_chatModel}:generateContent";
 
         var payload = new
         {
