@@ -21,6 +21,11 @@ Prosta aplikacja RAG (Retrieval-Augmented Generation) wykorzystująca .NET 8, Op
 - Entity Framework Core
 - ASP.NET Core Web API
 
+## Środowisko deweloperskie
+- Visual Studio Code
+- Docker (opcjonalnie, do uruchamiania PostgreSQL)
+- WSL (Ubunutu 22.04)
+
 ## Dostępne punkty końcowe API
 
 #### FILES - Zarządzanie plikami (Add/Get):
@@ -44,14 +49,26 @@ TODO: Ustawić odpowiednie zmienne środowiskowe i połączenia baz danych w `ap
 2. Skonfiguruj bazę danych PostgreSQL z rozszerzeniem pgvector
 3. Uruchom migracje bazy danych
 ```bash
-dotnet ef migrations add <MigrationName>
-dotnet ef database update
+dotnet ef migrations add <MigrationName> --project Infrastructure/Infrastructure.csproj
+dotnet ef database update --project Infrastructure/Infrastructure.csproj
 ```
-4. Uruchom aplikację
+4. Dodaj klucz API Google GenAI
+
+Np. zrób to jako export zmiennej środowiskowej w terminalu:
 ```bash
-dotnet run
+export GOOGLE_API_KEY="your_google_api_key"
 ```
-5. Użyj Swagger UI do testowania punktów końcowych API
+Albo `launchSettings.json` w projekcie Api.
+```json
+"environmentVariables": {
+    "GOOGLE_API_KEY": "your_google_api_key"
+}
+```
+5. Uruchom aplikację
+```bash
+dotnet run --project Api/Api.csproj
+```
+6. Użyj Swagger UI do testowania punktów końcowych API
 
 ## Przyszłe ulepszenia
 
