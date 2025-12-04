@@ -3,7 +3,7 @@ name: CI Pipeline
 on: [push, pull_request]
 
 jobs:
-  test:
+  test-build:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v6

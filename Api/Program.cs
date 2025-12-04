@@ -1,19 +1,19 @@
-
+// Applicaiton
+using SimpleRag.Application;
 using SimpleRag.Application.Services.Ask;
 using SimpleRag.Application.Services.File;
+using SimpleRag.Application.Interfaces.Persistence;
+using SimpleRag.Application.Interfaces;
+// Infrastructure
 using SimpleRag.Infrastructure.FileStorage;
 using SimpleRag.Infrastructure.FileExtraction;
 using SimpleRag.Infrastructure.Rag;
-using SimpleRag.Application.Interfaces;
 using SimpleRag.Infrastructure.Persistence.Repositories;
 using SimpleRag.Infrastructure.Persistence;
-using SimpleRag.Application.Interfaces.Persistence;
 using SimpleRag.Infrastructure.AiIntegration;
-
+// Other
 using Pgvector.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SimpleRag.Application;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
