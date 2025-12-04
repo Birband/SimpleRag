@@ -43,14 +43,14 @@ Prosta aplikacja RAG (Retrieval-Augmented Generation) wykorzystująca .NET 8, Op
 
 TODO: Ustawić odpowiednie zmienne środowiskowe i połączenia baz danych w `appsettings.json`.
 
-## Uruchomienie
+## Uruchomienie (WSL/Linux)
 
 1. Sklonuj repozytorium
 2. Skonfiguruj bazę danych PostgreSQL z rozszerzeniem pgvector
 3. Uruchom migracje bazy danych
 ```bash
-dotnet ef migrations add <MigrationName> --project Infrastructure/Infrastructure.csproj
-dotnet ef database update --project Infrastructure/Infrastructure.csproj
+dotnet ef migrations add <MigrationName> --project ./Infrastructure --startup-project ./Api
+dotnet ef database update --project ./Infrastructure --startup-project ./Api
 ```
 4. Dodaj klucz API Google GenAI
 
@@ -66,7 +66,7 @@ Albo `launchSettings.json` w projekcie Api.
 ```
 5. Uruchom aplikację
 ```bash
-dotnet run --project Api/Api.csproj
+dotnet run --project Api
 ```
 6. Użyj Swagger UI do testowania punktów końcowych API
 
