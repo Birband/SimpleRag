@@ -2,8 +2,6 @@ using SimpleRag.Application.DTOs;
 using SimpleRag.Application.Interfaces;
 using SimpleRag.Application.Interfaces.Persistence;
 using Pgvector;
-using System.Security.Principal;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
 
 namespace SimpleRag.Application.Services.Ask;

@@ -1,5 +1,3 @@
-using SimpleRag.Domain.Entities;
-
 namespace SimpleRag.Application.Interfaces;
 
 public interface IAiClient

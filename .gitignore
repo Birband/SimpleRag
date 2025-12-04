@@ -84,3 +84,6 @@ uploads/
 
 # HTTP request files
 *.http
+
+# 
+appsettings.Development.json
